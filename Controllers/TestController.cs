@@ -13,10 +13,22 @@ public class TestController : ControllerBase
     {
 
         string hostname = Dns.GetHostName();
-        var iphostinfo = Dns.GetHostEntry(hostname);
-        var ipAddresses =  iphostinfo.AddressList.Where(a=>a.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToList().Select(a=>a.ToString());
-        var stripadr = string.Join(" ", ipAddresses);
+        string stripadr = "";
+        try
+        {
+            var iphostinfo = Dns.GetHostEntry(hostname);
+            var ipAddresses = iphostinfo.AddressList.Where(a => a.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToList().Select(a => a.ToString());
+            stripadr = string.Join(" ", ipAddresses);
+
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine(ex.Message);
+        }
+
         string res = $"HostName: {hostname} Ip: {stripadr}";
+
         return res;
 
     }
